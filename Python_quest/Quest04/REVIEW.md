@@ -10,7 +10,7 @@ PRT(Peer Review Template)
   except ZeroDivisionError:
     print("0으로 나눌 수 없습니다") # 나눗셈 연산 시 두번째 정수가 0인 경우 ZeroDivisionError처리
   except Exception:
-    print("연산자를 잘못 입력하였습니다.") # 지원하지 않는 연산자 입력한 경우 오류 메세지 처리```
+    print("연산자를 잘못 입력하였습니다.") # 지원하지 않는 연산자 입력한 경우 오류 메세지 처리
 # 예외처리를 ZeroDivisionError / Exception / ValueError로 처리하여 간결합니다.
 
 문제에서 요구하는 기능이 정상적으로 작동하는지?
