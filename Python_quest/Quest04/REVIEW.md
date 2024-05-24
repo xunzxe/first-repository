@@ -4,8 +4,7 @@ AIFFEL Campus Code Peer Review
 PRT(Peer Review Template)
 [x] 1. 주어진 문제를 해결하는 완성된 코드가 제출되었나요?
 
-```
-except ValueError:
+```except ValueError:
     print("정수가 아닙니다") # 정수가 아닌 경우 ValueError 처리
     print("잘못된 입력입니다. 정수를 입력해 주세요.") # except "잘못
   except ZeroDivisionError:
