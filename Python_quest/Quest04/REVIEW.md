@@ -7,6 +7,15 @@
 [x]  **1. 주어진 문제를 해결하는 완성된 코드가 제출되었나요?**
 - 문제에서 요구하는 기능이 정상적으로 작동하는지? 
     - 해당 조건을 만족하는 부분의 코드 및 결과물을 근거로 첨부
+```
+except ValueError:
+    print("정수가 아닙니다") # 정수가 아닌 경우 ValueError 처리
+    print("잘못된 입력입니다. 정수를 입력해 주세요.") # except "잘못
+  except ZeroDivisionError:
+    print("0으로 나눌 수 없습니다") # 나눗셈 연산 시 두번째 정수가 0인 경우 ZeroDivisionError처리
+  except Exception:
+    print("연산자를 잘못 입력하였습니다.") # 지원하지 않는 연산자 입력한 경우 오류 메세지 처리
+```
     
 [x]  **2. 핵심적이거나 복잡하고 이해하기 어려운 부분에 작성된 설명을 보고 해당 코드가 잘 이해되었나요?**
 - 해당 코드 블럭에 doc string/annotation/markdown이 달려 있는지 확인
