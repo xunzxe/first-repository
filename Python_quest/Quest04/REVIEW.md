@@ -16,6 +16,7 @@ except ValueError:
   except Exception:
     print("연산자를 잘못 입력하였습니다.") # 지원하지 않는 연산자 입력한 경우 오류 메세지 처리
 ```
+# 예외처리를 ValueError, ZeroDivisionError, Exception 처리하여 구문이 훨씬 간결합니다.
     
 [x]  **2. 핵심적이거나 복잡하고 이해하기 어려운 부분에 작성된 설명을 보고 해당 코드가 잘 이해되었나요?**
 - 해당 코드 블럭에 doc string/annotation/markdown이 달려 있는지 확인
