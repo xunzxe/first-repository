@@ -1,0 +1,56 @@
+// 회고 : 파이썬과 코드가 달라 코딩하는 작업이 새롭고, 재미있었다
+
+// 비동기 작업 처리 패키지 불러오기
+import 'dart:async';
+
+void main() {
+  print('flutter: Pomodoro 타이머를 시작합니다.');
+
+  // 초기 설정
+  int cycle = 0; // 회차 구분 변수 : 4회차까지
+  int workDuration = 25 * 60; // 작업 시간 변수 : 25분을 초로 환산
+  int breakDuration = 5 * 60; // 휴식 시간 변수 : 5분을 초로 환산
+  int breakDuration4 = 15 * 60; // 4회차 휴식 시간 변수 : 15분을 초로 환산
+  int currentDuration = workDuration; // 현재 설정된 시간을 나타내는 변수
+  bool isWorkTime = true; // 작업 시간 여부를 나타내는 변수
+
+  // 타이머 생성 Time.periodic(시간 간격, 콜백함수(매개변수))
+  Timer.periodic(Duration(seconds: 1), (timer) {
+    // 타이머가 호출될 때마다 실행할 코드
+    // 시간이 1초씩 감소
+    currentDuration--;
+
+    // 남은 시간을 분:초 형식으로 출력
+    int minutes = currentDuration ~/ 60;
+    int seconds = currentDuration % 60;
+    print('flutter: ${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}');
+
+    // 작업 또는 휴식 시간이 종료되면 전환
+    if (currentDuration == 0) {
+      if (isWorkTime) {
+        // 작업 시간이 종료되었을 때
+        print('flutter: 작업 시간이 종료되었습니다. 휴식 시간을 시작합니다.');
+
+        if (cycle < 3) {
+          // 1,2,3번째 사이클일 경우 5분 휴식 시간 할당
+          currentDuration = breakDuration;
+        } else {
+          // 4번째 사이클일 경우 15분 휴식 시간 할당
+          currentDuration = breakDuration4;
+          // 다음 작업 사이클이 0으로 시작되도록 설정
+          cycle = -1;
+        }
+        // 사이클이 1씩 증가
+        cycle++;
+      } else {
+        // 휴식 시간이 종료되었을 때
+        print('flutter: 휴식 시간이 종료되었습니다. 작업 시간을 시작합니다.');
+        // 작업 시간 25분 할당
+        currentDuration = workDuration;
+      }
+
+      // 작업 시간과 휴식 시간을 번갈아가면서 설정
+      isWorkTime = !isWorkTime;
+    }
+  });
+}
