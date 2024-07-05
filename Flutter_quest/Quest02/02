@@ -21,7 +21,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: Icon(Icons.menu),    // appbar 좌측 상단에 아이콘 추가
-        title: Text('플러터 앱 만들기'), // appbar 중앙에 텍스트 추가
+        title: Text('플러터 앱 만들기', textAlign: TextAlign.center), // appbar 중앙에 텍스트 추가
         backgroundColor: Colors.blue,  // appbar 색상 blue 지정
       ),
       body: Center(
@@ -34,11 +34,10 @@ class MyHomePage extends StatelessWidget {
               },
               child: Text('Text'),       // Text 표기
             ),
-            SizedBox(height: 20),        // 버튼과 컨테이너 사이의 간격 추가
+            SizedBox(height: 20), // 버튼과 컨테이너 사이의 간격 추가
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 50), // 좌우에 여백 삽입
-              // retry : 중앙에 컨테이너를 위치시키기 위해 center를 사용했지만,
-              // topLeft로 정렬된 채로 중앙에 위치시키기 위해 여백을 삽입
+              // retry : 중앙에 컨테이너를 위치시키기 위해 center를 사용했지만, topLeft로 정렬된 채로 중앙에 위치시키기 위해 여백을 삽입함.
               child: Stack(
                 children: <Widget>[
                   // 첫 번째 정사각형 컨테이너
