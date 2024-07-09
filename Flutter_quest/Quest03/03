@@ -47,7 +47,7 @@ class _FirstPageState extends State<FirstPage> {
                       // retry : is_cat을 두번째 페이지로 전달하기 위에 () 안에 추가함
                   ),
                 ).then((_) {
-                  // 페이지가 pop되고 돌아왔을 때 is_cat을 true로 설정
+                  // retry : 페이지가 pop되고 돌아왔을 때 is_cat을 true로 설정
                   setState(() {
                     is_cat = true;
                   });
