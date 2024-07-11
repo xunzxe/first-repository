@@ -33,3 +33,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// 회고 : 프로토타이핑한대로 결과물이 안나와서 아쉬웠지만, 여러 페이지로 화면을 구성해볼 수 있어서 재밌었다.
