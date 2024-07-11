@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
-            child: CalendarCarousel(
+            child: CalendarCarousel(                     // retry : 캘린더 기능을 위해 Flutter에서 캘린더 위젯을 제공하는 패키지를 이용함
               onDayPressed: (date, events) {
                 setState(() {
                   _selectedDate = date;
