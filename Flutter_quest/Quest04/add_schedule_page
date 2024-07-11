@@ -16,7 +16,7 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
   TimeOfDay _selectedTime = TimeOfDay.now();
 
   Future<void> _selectTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
+    final TimeOfDay? picked = await showTimePicker(     // retry :  시간을 입력받고자 showTimePicker라는 Flutter의 내장된 시간 선택 다이얼로그를 사용함
       context: context,
       initialTime: _selectedTime,
     );
