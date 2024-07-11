@@ -31,7 +31,7 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(                          // 상단바
         title: Text('일정 추가'),
       ),
       body: SingleChildScrollView(
