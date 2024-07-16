@@ -106,7 +106,7 @@ class MyHomePageState extends State<MyHomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ElevatedButton(
-                          // 이 코드처럼 하면 오류 발생함. 콜백을 호출하는 거여서 '() {}' 형식 또는 '() =>' 형식을 사용해야 함.
+                          // retry : 이 코드처럼 하면 오류 발생함. 콜백을 호출하는 거여서 '() {}' 형식 또는 '() =>' 형식을 사용해야 함.
                           // onPressed: fetchData('label'),
                             onPressed: () => fetchData('label'),
                             child : const Text('종류')
@@ -115,7 +115,7 @@ class MyHomePageState extends State<MyHomePage> {
                           width: 20,
                         ),
                         ElevatedButton(
-                          // 이 코드처럼 하면 오류 발생함. 콜백을 호출하는 거여서 '() {}' 형식 또는 '() =>' 형식을 사용해야 함.
+                          // retry : 이 코드처럼 하면 오류 발생함. 콜백을 호출하는 거여서 '() {}' 형식 또는 '() =>' 형식을 사용해야 함.
                           // onPressed: fetchData('score'),
                             onPressed: () => fetchData('score'),
                             child : const Text('확률')
