@@ -1,0 +1,93 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:schedule/providers/schedule_provider.dart';
+import 'package:schedule/pages/detail_page.dart';
+import 'package:schedule/pages/add_schedule_page.dart';
+
+class CategoryPage extends StatefulWidget {
+  @override
+  _CategoryPageState createState() => _CategoryPageState();
+}
+
+class _CategoryPageState extends State<CategoryPage> {
+  String _selectedCategory = 'All';
+
+  @override
+  Widget build(BuildContext context) {
+    final schedules = Provider.of<ScheduleProvider>(context).schedules;
+
+    // 카테고리 목록 생성
+    final categories = <String>{'All'}
+      ..addAll(schedules.map((s) => s.category).toSet());
+
+    // 선택된 카테고리에 따라 일정 필터링
+    final filteredSchedules = _selectedCategory == 'All'
+        ? schedules
+        : schedules.where((s) => s.category == _selectedCategory).toList();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('마이 페이지'),
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: DropdownButton<String>(
+              value: _selectedCategory,
+              items: categories.map((category) {
+                return DropdownMenuItem(
+                  value: category,
+                  child: Text(category),
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  _selectedCategory = value!;
+                });
+              },
+              isExpanded: true,
+              hint: Text('카테고리 선택'),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: filteredSchedules.length,
+              itemBuilder: (ctx, index) {
+                final schedule = filteredSchedules[index];
+                return ListTile(
+                  title: Text(schedule.title),
+                  subtitle: Text(
+                      '${schedule.date.toLocal().toString().split(' ')[0]} ${schedule.date.hour.toString().padLeft(2, '0')}:${schedule.date.minute.toString().padLeft(2, '0')}'
+                  ),
+                  leading: Icon(schedule.icon),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      Provider.of<ScheduleProvider>(context, listen: false)
+                          .deleteSchedule(schedule);
+                    },
+                  ),
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed(DetailPage.routeName, arguments: schedule.date);
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => AddSchedulePage(selectedDate: DateTime.now()),
+            ),
+          );
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
