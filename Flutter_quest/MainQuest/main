@@ -1,0 +1,97 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:schedule/providers/schedule_provider.dart';
+import 'package:schedule/providers/image_provider.dart';
+import 'package:schedule/pages/home_page.dart';
+import 'package:schedule/pages/detail_page.dart';
+import 'package:schedule/pages/onboarding_screen.dart';
+import 'package:schedule/pages/create_id_screen.dart';
+import 'package:schedule/pages/category_page.dart';
+import 'package:schedule/pages/image_download.dart';
+
+void main() {
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ScheduleProvider()),
+        ChangeNotifierProvider(create: (context) => ImageProviderModel()),
+      ],
+      child: MaterialApp(
+        title: 'Schedule App',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        initialRoute: '/onboarding',
+        routes: {
+          '/': (ctx) => MainHomePage(),
+          '/createId': (ctx) => CreateIdScreen(),
+          DetailPage.routeName: (ctx) => DetailPage(),
+          '/imageDownload': (ctx) => ImageDownload(),
+          '/categoryPage': (ctx) => CategoryPage(),
+          '/onboarding': (ctx) => OnboardingScreen(),
+          '/onboarding': (ctx) => OnboardingScreen(),
+        },
+      ),
+    ),
+  );
+}
+
+class MainHomePage extends StatefulWidget {
+  @override
+  _MainHomePageState createState() => _MainHomePageState();
+}
+
+class _MainHomePageState extends State<MainHomePage> {
+  int _selectedIndex = 0;
+  String _userId = '';
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final userId = ModalRoute.of(context)?.settings.arguments as String?;
+    if (userId != null) {
+      setState(() {
+        _userId = userId;
+      });
+    }
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: [
+          HomePage(userId: _userId),
+          ImageDownload(),
+          CategoryPage(),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.today),
+            label: '오늘의 일정',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.format_quote),
+            label: '오늘의 명언',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: '마이 페이지',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
+      ),
+    );
+  }
+}
