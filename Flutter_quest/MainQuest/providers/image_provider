@@ -1,0 +1,38 @@
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+class ImageProviderModel with ChangeNotifier {
+  List<File> _images = [];
+  List<String> _descriptions = [];
+  final picker = ImagePicker();
+
+  List<File> get images => _images;
+  List<String> get descriptions => _descriptions;
+
+  Future<void> getImages() async {
+    final pickedFiles = await picker.pickMultiImage();
+    if (pickedFiles != null) {
+      _images.addAll(pickedFiles.map((pickedFile) => File(pickedFile.path)));
+      _descriptions.addAll(List.generate(pickedFiles.length, (index) => ""));
+      notifyListeners();
+    }
+  }
+
+  void addImage(File image) {
+    _images.add(image);
+    _descriptions.add(""); // Add a placeholder description
+    notifyListeners();
+  }
+
+  void removeImage(int index) {
+    _images.removeAt(index);
+    _descriptions.removeAt(index);
+    notifyListeners();
+  }
+
+  void updateDescription(int index, String description) {
+    _descriptions[index] = description;
+    notifyListeners();
+  }
+}
