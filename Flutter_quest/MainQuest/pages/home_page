@@ -1,0 +1,145 @@
+import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:provider/provider.dart';
+import 'package:schedule/providers/schedule_provider.dart';
+import 'package:schedule/pages/detail_page.dart';
+import 'package:schedule/pages/add_schedule_page.dart';
+
+class HomePage extends StatefulWidget {
+  final String userId;
+
+  HomePage({required this.userId});
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  DateTime _selectedDate = DateTime.now();
+  DateTime _focusedDay = DateTime.now();
+  CalendarFormat _calendarFormat = CalendarFormat.week;
+  List<bool> _isSelected = [];
+
+  void _onFormatChanged(CalendarFormat format) {
+    setState(() {
+      _calendarFormat = format;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final schedules = Provider.of<ScheduleProvider>(context).schedules;
+
+    final filteredSchedules = schedules
+        .where((s) =>
+    s.date.day == _selectedDate.day &&
+        s.date.month == _selectedDate.month &&
+        s.date.year == _selectedDate.year)
+        .toList()
+      ..sort((a, b) => a.date.compareTo(b.date));
+
+    // Ensure _isSelected is the same length as filteredSchedules
+    if (_isSelected.length != filteredSchedules.length) {
+      _isSelected = List.generate(filteredSchedules.length, (index) => false);
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('${widget.userId}님의 일정'),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          TableCalendar(
+            focusedDay: _focusedDay,
+            firstDay: DateTime.utc(2020, 1, 1),
+            lastDay: DateTime.utc(2030, 12, 31),
+            calendarFormat: _calendarFormat,
+            selectedDayPredicate: (day) {
+              return isSameDay(_selectedDate, day);
+            },
+            onDaySelected: (selectedDay, focusedDay) {
+              setState(() {
+                _selectedDate = selectedDay;
+                _focusedDay = focusedDay;
+              });
+            },
+            onFormatChanged: _onFormatChanged,
+            daysOfWeekStyle: DaysOfWeekStyle(
+              weekdayStyle: TextStyle(color: Colors.black),
+              weekendStyle: TextStyle(color: Colors.red),
+            ),
+            calendarStyle: CalendarStyle(
+              selectedDecoration: BoxDecoration(
+                color: Colors.blue,
+                shape: BoxShape.circle,
+              ),
+              selectedTextStyle: TextStyle(color: Colors.white),
+              todayDecoration: BoxDecoration(
+                color: Colors.orange,
+                shape: BoxShape.circle,
+              ),
+              todayTextStyle: TextStyle(color: Colors.white),
+              weekendTextStyle: TextStyle(color: Colors.red),
+            ),
+            headerStyle: HeaderStyle(
+              titleTextStyle: TextStyle(fontSize: 16.0),
+            ),
+            rowHeight: 40.0,
+          ),
+          SizedBox(height: 10),
+          Expanded(
+            child: ListView.builder(
+              itemCount: filteredSchedules.length,
+              itemBuilder: (ctx, index) {
+                final schedule = filteredSchedules[index];
+                return ListTile(
+                  title: Text(schedule.title),
+                  subtitle: Text(
+                      '${schedule.date.hour}:${schedule.date.minute.toString().padLeft(2, '0')} | ${schedule.category}'),
+                  leading: Icon(schedule.icon),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: _isSelected[index]
+                            ? Icon(Icons.check_box)
+                            : Icon(Icons.check_box_outline_blank),
+                        onPressed: () {
+                          setState(() {
+                            _isSelected[index] = !_isSelected[index];
+                          });
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          Provider.of<ScheduleProvider>(context, listen: false)
+                              .deleteSchedule(schedule);
+                        },
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed(DetailPage.routeName, arguments: schedule.date);
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => AddSchedulePage(selectedDate: _selectedDate),
+            ),
+          );
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
