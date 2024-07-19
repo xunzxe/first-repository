@@ -1,0 +1,48 @@
+import 'package:flutter/material.dart';
+
+class Schedule {
+  final DateTime date;
+  final String title;
+  final IconData icon;
+  final String category;
+
+  Schedule({
+    required this.date,
+    required this.title,
+    required this.icon,
+    this.category = '',
+  });
+}
+
+class ScheduleProvider with ChangeNotifier {
+  List<Schedule> _schedules = [];
+
+  List<Schedule> get schedules => _schedules;
+
+  void addSchedule(Schedule schedule) {
+    _schedules.add(schedule);
+    notifyListeners();
+  }
+
+  void deleteSchedule(Schedule schedule) {
+    _schedules.remove(schedule);
+    notifyListeners();
+  }
+
+  void updateSchedule(int index, {String? title, String? category}) {
+    if (index >= 0 && index < _schedules.length) {
+      Schedule existingSchedule = _schedules[index];
+      _schedules[index] = Schedule(
+        date: existingSchedule.date,
+        title: title ?? existingSchedule.title,
+        icon: existingSchedule.icon,
+        category: category ?? existingSchedule.category,
+      );
+      notifyListeners();
+    }
+  }
+
+  List<Schedule> getSchedulesByCategory(String category) {
+    return _schedules.where((schedule) => schedule.category == category).toList();
+  }
+}
